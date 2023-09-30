@@ -132,7 +132,7 @@ body{
     <div class="container">
 		<section id="typography">
 		  <div class="page-header">
-		    <h1 style="color:#830303">Customize T-Shirt</h1>
+		    <h1 style="color:#830303">Customize Apparel</h1>
 		  </div>
 		
 		  <!-- Headings & Paragraph Copy -->
