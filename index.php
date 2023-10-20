@@ -184,7 +184,7 @@ include("header.php");
 <!-- Footer -->
 
 <?php
-session_start();
+// session_start();
 include('footer.php');
 
 // Check if the user is logged in and the popup has not been shown yet

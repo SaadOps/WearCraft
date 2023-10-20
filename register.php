@@ -51,7 +51,7 @@ include('header.php');
                         </div>
                         <div class="group-input">
                             <label for="con-pass">Address *</label>
-                            <input type="text" id="con-pass" name="address" required>
+                            <input type="text" id="con-pass" name "address" required>
                         </div>
                         <button type="submit" class="site-btn register-btn" name="register">REGISTER</button>
                     </form>
@@ -105,8 +105,7 @@ include('footer.php');
     });
 </script>
 
-</body>
-</html>
+
 <?php
 if (isset($_POST['register'])) {
     $c_name = $_POST['name'];
@@ -117,31 +116,43 @@ if (isset($_POST['register'])) {
 
     $c_ip = getRealIpUser();
 
-    $insert_c = "INSERT INTO customer (customer_name, customer_email, customer_pass, customer_address, customer_contact, customer_ip)
-                VALUES ('$c_name', '$c_email', '$c_pass', '$c_address', '$c_contact', '$c_ip')";
+    // Check if the email or phone number already exists in the database
+    $check_query = "SELECT * FROM customer WHERE customer_email = '$c_email' OR customer_contact = '$c_contact'";
+    $check_result = mysqli_query($con, $check_query);
 
-    $run_insert = mysqli_query($con, $insert_c);
-
-    if ($run_insert) {
-        // Registration successful
-        $_SESSION['customer_email'] = $c_email;
-        $c_id = $_SESSION['customer_email'];
-
-        $sel_cart = "SELECT * FROM cart WHERE c_id = '$c_id'";
-        $run_sel_cart = mysqli_query($con, $sel_cart);
-        $check_cart = mysqli_num_rows($run_sel_cart);
-
-        if ($check_cart > 0) {
-            echo "<script>alert('Account registered. You are Logged In')</script>";
-            echo "<script>window.open('check-out.php','_self')</script>";
-        } else {
-            echo "<script>alert('Account registered. You are Logged In')</script>";
-            echo "<script>window.open('index.php','_self')</script>";
-        }
+    if (mysqli_num_rows($check_result) > 0) {
+        // Email or phone number already exists, display an error message
+        echo "<script>alert('Account with this email or phone number already exists.')</script>";
     } else {
-        // Registration failed
-        echo "<script>alert('Registration failed. Please try again.')</script>";
+        // Email and phone number are unique, proceed with registration
+        $insert_c = "INSERT INTO customer (customer_name, customer_email, customer_pass, customer_address, customer_contact, customer_ip)
+                    VALUES ('$c_name', '$c_email', '$c_pass', '$c_address', '$c_contact', '$c_ip')";
+
+        $run_insert = mysqli_query($con, $insert_c);
+
+        if ($run_insert) {
+            // Registration successful
+            $_SESSION['customer_email'] = $c_email;
+            $c_id = $_SESSION['customer_email'];
+
+            $sel_cart = "SELECT * FROM cart WHERE c_id = '$c_id'";
+            $run_sel_cart = mysqli_query($con, $sel_cart);
+            $check_cart = mysqli_num_rows($run_sel_cart);
+
+            if ($check_cart > 0) {
+                echo "<script>alert('Account registered. You are Logged In')</script>";
+                echo "<script>window.open('check-out.php','_self')</script>";
+            } else {
+                echo "<script>alert('Account registered. You are Logged In')</script>";
+                echo "<script>window.open('index.php','_self')</script>";
+            }
+        } else {
+            // Registration failed
+            echo "<script>alert('Registration failed. Please try again.')</script>";
+        }
     }
 }
 ?>
 
+</body>
+</html>
