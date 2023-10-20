@@ -2,7 +2,6 @@
 include('../db.php');
 ?>
 
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -12,7 +11,6 @@ include('../db.php');
     <title>Admin Panel</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-
     <style>
         .top {
             font-size: 28px;
@@ -25,17 +23,13 @@ include('../db.php');
                 0 0 10px rgba(0, 0, 0, 0.1);
         }
     </style>
-
-
 </head>
 
 <body>
-
     <div class="row">
         <div class="col-lg-12">
             <div class="top">
-                <i class="fa fa-dashboard fa-fw">
-                </i> Dashboard
+                <i class="fa fa-dashboard fa-fw"></i> Dashboard
             </div>
         </div>
     </div>
@@ -48,138 +42,88 @@ include('../db.php');
                         <i class="fa fa-money fa-fw"></i> Insert Products
                     </h3>
                 </div>
-
                 <div class="panel-body">
                     <form method="post" class="form-horizontal" enctype="multipart/form-data">
-
                         <div class="form-group">
                             <label class="col-md-3 control-label">Product Title/Name</label>
-
                             <div class="col-md-6">
                                 <input type="text" class="form-control" name="product_title" required>
                             </div>
                         </div>
-
                         <div class="form-group">
                             <label class="col-md-3 control-label">Product Category</label>
-
                             <div class="col-md-6">
                                 <select class="form-control" name="p_cat_id">
-
                                     <option>Select a Product Category</option>
-
                                     <?php
-
-                                    $get_p_category = "select * from product_categories";
+                                    $get_p_category = "SELECT * FROM product_categories";
                                     $run_p_category = mysqli_query($con, $get_p_category);
-
                                     while ($p_cat_row = mysqli_fetch_array($run_p_category)) {
-
                                         $p_cat_id = $p_cat_row['p_cat_id'];
                                         $p_cat_title = $p_cat_row['p_cat_title'];
-
-                                        echo "
-                                        
-                                        <option value='$p_cat_id'>$p_cat_title</option>  
-                                        
-                                    
-                                        ";
+                                        echo "<option value='$p_cat_id'>$p_cat_title</option>";
                                     }
-
                                     ?>
-
                                 </select>
                             </div>
                         </div>
-
                         <div class="form-group">
-                            <label class="col-md-3 control-label">Category</label>
-
+                            <label class="col-md_3 control-label">Category</label>
                             <div class="col-md-6">
                                 <select class="form-control" name="cat_id">
-
                                     <option>Select a Category</option>
-
                                     <?php
-
-                                    $get_category = "select * from category";
+                                    $get_category = "SELECT * FROM category";
                                     $run_category = mysqli_query($con, $get_category);
-
                                     while ($cat_row = mysqli_fetch_array($run_category)) {
-
                                         $cat_id = $cat_row['cat_id'];
                                         $cat_title = $cat_row['cat_title'];
-
-                                        echo "
-                                        
-                                        <option value='$cat_id'>$cat_title</option>  
-                                        
-                                    
-                                        ";
+                                        echo "<option value='$cat_id'>$cat_title</option>";
                                     }
-
                                     ?>
-
                                 </select>
                             </div>
                         </div>
-
                         <div class="form-group">
-                            <label class="col-md-3 control-label">Product Image # 1</label>
-
+                            <label class="col-md-3 control-label">Product Image #1</label>
                             <div class="col-md-6">
                                 <input type="file" class="form-control" name="product_img1" required>
                             </div>
                         </div>
-
                         <div class="form-group">
-                            <label class="col-md-3 control-label">Product Image # 2</label>
-
+                            <label class="col-md-3 control-label">Product Image #2</label>
                             <div class="col-md-6">
                                 <input type="file" class="form-control" name="product_img2" required>
                             </div>
                         </div>
-
                         <div class="form-group">
                             <label class="col-md-3 control-label">Product Price</label>
-
                             <div class="col-md-6">
                                 <input type="text" class="form-control" name="product_price" required>
                             </div>
                         </div>
-
                         <div class="form-group">
                             <label class="col-md-3 control-label">Product Keywords</label>
-
                             <div class="col-md-6">
                                 <input type="text" class="form-control" name="product_keywords" required>
                             </div>
                         </div>
-
                         <div class="form-group">
                             <label class="col-md-3 control-label">Product Description</label>
-
                             <div class="col-md-6">
                                 <textarea class="form-control" name="product_desc" cols="19" rows="6"></textarea>
                             </div>
                         </div>
-
                         <div class="form-group" style="display: flex;justify-content:center">
                             <div class="col-md-3">
                                 <input name="submit" type="submit" class="btn btn-primary form-control" value="Insert Product">
                             </div>
                         </div>
-
                     </form>
-
-
                 </div>
             </div>
         </div>
     </div>
-
-
-
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
@@ -189,41 +133,52 @@ include('../db.php');
             selector: 'textarea'
         });
     </script>
-
 </body>
 
 </html>
 
-
 <?php
-
 if (isset($_POST['submit'])) {
-
     $p_cat_id = $_POST['p_cat_id'];
     $cat_id = $_POST['cat_id'];
-    $product_title = $_POST['product_title'];
+    $product_title = mysqli_real_escape_string($con, $_POST['product_title']);
     $product_img1 = $_FILES['product_img1']['name'];
     $product_img2 = $_FILES['product_img2']['name'];
     $product_price = $_POST['product_price'];
     $product_keywords = $_POST['product_keywords'];
-    $product_desc = $_POST['product_desc'];
-
+    $product_desc = mysqli_real_escape_string($con, $_POST['product_desc']);
 
     $temp_name1 = $_FILES['product_img1']['tmp_name'];
     $temp_name2 = $_FILES['product_img2']['tmp_name'];
 
-    move_uploaded_file($temp_name1, "img/products/$product_img1");
-    move_uploaded_file($temp_name2, "img/products/$product_img2");
+    $image1_path = "../img/products/$product_img1";
+    $image2_path = "../img/products/$product_img2";
 
-    $insert_product = "Insert into products (p_cat_id,cat_id,date,product_title,product_img1,product_img2,product_price,product_keywords,product_desc)
-    values ('$p_cat_id','$cat_id',NOW(),'$product_title','$product_img1','$product_img2','$product_price','$product_keywords','$product_desc')";
+    // Check if the product with the same name exists
+    $check_product_query = "SELECT * FROM products WHERE product_title = '$product_title'";
+    $check_product_result = mysqli_query($con, $check_product_query);
 
-    $run_insert_product = mysqli_query($con, $insert_product);
+    if (mysqli_num_rows($check_product_result) > 0) {
+        echo "<script>alert('Product with the same name already exists.')</script>";
+    } elseif ($product_price <= 200) {
+        echo "<script>alert('Product price must be greater than 200.')</script>";
+    } elseif (file_exists($image1_path) || file_exists($image2_path)) {
+        echo "<script>alert('Product images must be unique.')</script>";
+    } else {
+        move_uploaded_file($temp_name1, $image1_path);
+        move_uploaded_file($temp_name2, $image2_path);
 
-    if ($run_insert_product) {
-        echo "<script>alert('Product Inserted')</script>";
-        echo "<script>window.open('insert-product.php','_self')</script>";
+        $insert_product = "INSERT INTO products (p_cat_id, cat_id, date, product_title, product_img1, product_img2, product_price, product_keywords, product_desc)
+        VALUES ('$p_cat_id', '$cat_id', NOW(), '$product_title', '$product_img1', '$product_img2', '$product_price', '$product_keywords', '$product_desc')";
+
+        $run_insert_product = mysqli_query($con, $insert_product);
+
+        if ($run_insert_product) {
+            echo "<script>alert('Product Inserted')</script>";
+            echo "<script>window.open('insert-product.php','_self')</script>";
+        } else {
+            echo "<script>alert('Failed to insert the product.')</script>";
+        }
     }
 }
-
 ?>
