@@ -99,6 +99,13 @@ include('header.php');
 </div>
 
 </section>
+<div class="container">
+        <div class="row justify-content-center align-items-center" style="height: 60vh;"> <!-- Adjust the height here -->
+            <div class="col-md-6 text-center">
+                <img src="./img/size-chart.png" alt="Size Chart" class="img-fluid">
+            </div>
+        </div>
+    </div>
 
 
 <div class="related-products spad">
