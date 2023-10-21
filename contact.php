@@ -4,8 +4,31 @@ include('db.php');
 include("functions.php");
 include("header.php");
 
-?>
+if (isset($_POST['submit'])) {
+    $user_name = $_POST['name'];
+    $user_email = $_POST['email'];
+    $user_subject = $_POST['subject'];
+    $user_msg = $_POST['message'];
 
+    $receiver_mail = 'saad7teen@gmail.com';
+    $subject = 'Contact Form Submission: ' . $user_subject;
+
+    $message = "Name: $user_name\n";
+    $message .= "Email: $user_email\n";
+    $message .= "Subject: $user_subject\n";
+    $message .= "Message:\n$user_msg";
+
+    $headers = 'From: ' . $user_email . "\r\n" .
+        'Reply-To: ' . $user_email . "\r\n";
+
+    // Send the email
+    if (mail($receiver_mail, $subject, $message, $headers)) {
+        echo '<div class="alert alert-success">Your message has been sent successfully.</div>';
+    } else {
+        echo '<div class="alert alert-danger">Sorry, there was an error sending your message.</div>';
+    }
+}
+?>
 
 <!-- Breadcrumb Section Begin -->
 <div class="breacrumb-section">
@@ -28,7 +51,7 @@ include("header.php");
         <div class="row">
             <div class="col-lg-5">
                 <div class="contact-title">
-                    <h4>Contacts Us</h4>
+                    <h4>Contact Us</h4>
                     <p>Your Passion is our Satisfaction</p>
                 </div>
                 <div class="contact-widget">
@@ -62,12 +85,11 @@ include("header.php");
                 </div>
             </div>
             <div class="col-lg-6 offset-lg-1">
-
                 <div class="contact-form">
                     <div class="leave-comment">
                         <h4>Leave A Message</h4>
                         <p>Our staff will call back later and answer your questions.</p>
-                        <form action="contact.php" class="comment-form">
+                        <form action="contact.php" method="post" class="comment-form">
                             <div class="row">
                                 <div class="col-lg-6">
                                     <input type="text" placeholder="Your name" class="form-control" name="name" required>
@@ -79,26 +101,11 @@ include("header.php");
                                     <input type="text" placeholder="Message Subject" class="form-control" name="subject" required>
                                 </div>
                                 <div class="col-lg-12">
-                                    <textarea placeholder="Your message" class="form-control" name="message"></textarea>
-                                    <button class="site-btn" name="submit">Send message</button>
+                                    <textarea placeholder="Your message" class="form-control" name="message" required></textarea>
+                                    <button type="submit" class="site-btn" name="submit">Send message</button>
                                 </div>
                             </div>
                         </form>
-
-                        <?php
-
-                        if (isset($_POST['submit'])) {
-                            $user_name = $_POST['name'];
-                            $user_email = $_POST['email'];
-                            $user_subject = $_POST['subject'];
-                            $user_msg = $_POST['message'];
-
-                            $receiver_mail = 'saad7teen@gmail.com';
-
-                            mail($receiver_mail, $user_name, $user_subject, $user_msg, $user_email);
-                        }
-
-                        ?>
                     </div>
                 </div>
             </div>
@@ -111,7 +118,5 @@ include("header.php");
 include('footer.php');
 ?>
 
-
 </body>
-
 </html>
